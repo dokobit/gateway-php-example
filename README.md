@@ -13,13 +13,13 @@
 \* You should provide file URL which would be accessible for Gateway API.  
 \*\* File status must be checked before creating signing.
 
-`upload-file.php` - PHP code example for uploading file.  
+`upload-file.php` - PHP code example for uploading file. Could be run from web or CLI.
 
 ### Create signing
 - Use file token provided with file upload response.
 - Add as many signers as you need.
 
-`create-signing.php` - PHP code example for creating signing.
+`create-signing.php` - PHP code example for creating signing. Could be run from web or CLI. **Before running: edit file, and change `$file['token']` value, with token you get after running `upload-file.php`**.
 
 ### Sign
 Signing URL formation: https://gateway-sandbox.isign.io/signing/SIGNING_TOKEN?access_token=SIGNER_ACCESS_TOKEN.

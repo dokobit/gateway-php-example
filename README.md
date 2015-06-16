@@ -29,3 +29,22 @@ URL is unique for each signer.
 Signers represented as associative array where key is signer's unique identifier - personal code.  
 
 Navigate to signing URL, sign document.  
+
+
+### Retrieving signed document
+After document signing postback calls are trigered, if 
+`callback_url` was set while creating signing.  
+There are two types of postback calls:
+1. After signer has signed document - `signer_signed`.
+2. After signing has been completed (all signers successfully signed) - `signing_completed`.
+
+`signing-finished-postback.php` - PHP code example for handling postback calls.
+File should be placed in public web directory, accessible for Gateway API.
+
+To retrieve signed document using these examples, your will need:
+- Put `signing-finished-postback.php` in public web directory, accessible for Gateway API.
+- Set `$postbackUrl` parameter in `config.php` with URL where the `signing-finished-postback.php` will be available. For eg. `http://your-public-host/signing-finished-postback.php`.
+- Create signing.
+- Sign.
+- Information about signed document will be sent to postback URL. `signing-finished-postback.php` will handle postback and signed file will be stored in directory where `signing-finished-postback.php` is located.
+- Log file `postback.log` containing postback information, will be placed in the same directory as postback handler.

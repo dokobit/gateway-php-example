@@ -17,7 +17,7 @@ $files = [];
  * 
  * File token provided by file upload response.
  */
-$file['token'] = '557fc8bcef721a50edb61f4bbdce166b752dbd3d3c434fb2de1ab';
+$file['token'] = '557fda37b6b57a50edb61f4bbdce166b752dbd3d3c434fb2de1ab';
 
 array_push($files, $file); // For 'pdf' type only one file is supported.
 
@@ -80,6 +80,7 @@ $createResponse = request(getApiUrlByAction($action), [
     'name' => $signingName,
     'signers' => $signers,
     'files' => $files,
+    'postback_url' => $postbackUrl,
 ], REQUEST_POST);
 
 if ($createResponse['status'] != 'ok') {

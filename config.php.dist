@@ -1,3 +1,5 @@
 <?php
 $apiUrl = 'https://gateway-sandbox.isign.io';
 $accessToken = 'your-access-token';
+$postbackUrl = '';
+// $postbackUrl = 'http://your-public-host/signing-finished-postback.php';

@@ -30,8 +30,10 @@ function request($requestUrl, $fields = [], $post = REQUEST_POST) {
     $response = curl_exec($ch);
     $result = json_decode($response, true);
     if ($result ===  null) {
-        echo "\nGot NULL Response. Actual response: \n";
+        $path = __DIR__ . '/error.log';
         var_dump($response);
+        file_put_contents($path, $response);
+        echo "\nGOT NULL RESULT. Actual response: $path\n";
         echo curl_error($ch);
     }
     curl_close($ch);

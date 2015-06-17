@@ -22,7 +22,7 @@ $file['token'] = '557fda37b6b57a50edb61f4bbdce166b752dbd3d3c434fb2de1ab';
 array_push($files, $file); // For 'pdf' type only one file is supported.
 
 /**
- * Signing type. Only 'pdf' is supported at the moment. See documentation.
+ * Signed document format. Check documentation for all available options.
  */
 $type = 'pdf';
 

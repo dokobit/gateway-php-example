@@ -22,7 +22,7 @@ function writeLog($data) {
  * Download signed file helper
  * @param string $url
  */
-function downloadFile($url) {
+function downloadFile($url, $prefix = 'signed') {
     writeLog("Downloading signed file from " . $url);
 
     // Using curl to download file
@@ -41,7 +41,7 @@ function downloadFile($url) {
     }
 
     // Save downloaded file
-    $name = 'signed_' . mt_rand() . '.pdf';
+    $name = $prefix . mt_rand() . '.pdf';
     $path = __DIR__ . '/' . $name;
     writeLog("Saving file to " . $path);
     file_put_contents($path, $data);
@@ -71,6 +71,17 @@ if ($params['action'] == 'signer_signed') {
 
     // Download signed file
     downloadFile($url);
+} elseif ($params['action'] == 'signing_archived') {
+    // Signing has been archived
+
+    // $accessToken - API access token
+    $url = $params['file'] . '?access_token=' . $accessToken;
+
+    // Download signed file
+    downloadFile($url, 'archived');
+} elseif ($params['action'] == 'signing_archive_failed') {
+    // Signing archiving failed
+    
 }
 
 writeLog('End.');

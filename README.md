@@ -34,17 +34,19 @@ Navigate to signing URL, sign document.
 ### Retrieving signed document
 After document signing postback calls are trigered, if 
 `callback_url` was set while creating signing.  
-There are two types of postback calls:
-1. After signer has signed document - `signer_signed`.
-2. After signing has been completed (all signers successfully signed) - `signing_completed`.
+There are four types of postback calls:
+1. `signer_signed` - after signer has signed document.
+2. `signing_completed` - after signing has been completed (all signers successfully signed).
+3. `signing_archived` - after document was archived (for signings with PADES-LTV and XADES-XL levels only).
+3. `signing_archive_failed` - after document couldn't be archived (for signings with PADES-LTV and XADES-XL levels only).
 
-`signing-finished-postback.php` - PHP code example for handling postback calls.
+`postback-handler.php` - PHP code example for handling postback calls.
 File should be placed in public web directory, accessible for Gateway API.
 
 To retrieve signed document using these examples, your will need:
-- Put `signing-finished-postback.php` in public web directory, accessible for Gateway API.
-- Set `$postbackUrl` parameter in `config.php` with URL where the `signing-finished-postback.php` will be available. For eg. `http://your-public-host/signing-finished-postback.php`.
+- Put `postback-handler.php` in public web directory, accessible for Gateway API.
+- Set `$postbackUrl` parameter in `config.php` with URL where the `postback-handler.php` will be available. For eg. `http://your-public-host/postback-handler.php`.
 - Create signing.
 - Sign.
-- Information about signed document will be sent to postback URL. `signing-finished-postback.php` will handle postback and signed file will be stored in directory where `signing-finished-postback.php` is located.
+- Information about signed document will be sent to postback URL. `postback-handler.php` will handle postback and signed file will be stored in directory where `postback-handler.php` is located.
 - Log file `postback.log` containing postback information, will be placed in the same directory as postback handler.

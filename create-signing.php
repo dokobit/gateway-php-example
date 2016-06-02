@@ -17,7 +17,8 @@ $files = [];
  * 
  * File token provided by file upload response.
  */
-$file['token'] = '557fda37b6b57a50edb61f4bbdce166b752dbd3d3c434fb2de1ab';
+
+$file['token'] = '5582ce8dd5f83a50edb61f4bbdce166b752dbd3d3c434fb2de1ab';
 
 array_push($files, $file); // For 'pdf' type only one file is supported.
 

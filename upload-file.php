@@ -18,7 +18,7 @@ $file['name'] = 'test.pdf';
  * Gateway API will download the file from given resource URL.
  * Ensure that file URL is accessible from internet.
  */
-$file['url'] = 'http://developers.isign.io/sc/test.pdf';
+$file['url'] = 'https://developers.isign.io/sc/test.pdf';
 
 /**
  * SHA1 digest of file content.

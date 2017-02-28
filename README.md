@@ -1,4 +1,4 @@
-# iSign.io Gateway API PHP Example
+# ISIGN.io Gateway API PHP Example
 
 ## Example configuration
 - Copy `config.php.dist` to `config.php`.
@@ -35,6 +35,7 @@ Navigate to signing URL, sign document.
 After document signing postback calls are trigered, if 
 `callback_url` was set while creating signing.  
 There are four types of postback calls:
+
 1. `signer_signed` - after signer has signed document.
 2. `signing_completed` - after signing has been completed (all signers successfully signed).
 3. `signing_archived` - after document was archived (for signings with PADES-LTV and XADES-XL levels only).
@@ -44,6 +45,7 @@ There are four types of postback calls:
 File should be placed in public web directory, accessible for Gateway API.
 
 To retrieve signed document using these examples, your will need:
+
 - Put `postback-handler.php` in public web directory, accessible for Gateway API.
 - Set `$postbackUrl` parameter in `config.php` with URL where the `postback-handler.php` will be available. For eg. `http://your-public-host/postback-handler.php`.
 - Create signing.

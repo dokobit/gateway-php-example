@@ -1,76 +1,92 @@
 <?php
+use Dokobit\Gateway\Client;
+use Dokobit\Gateway\Query\Signing\Create;
+use Dokobit\Gateway\Query\Signing\CreateBatch;
+
+require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/config.php';
-require_once __DIR__ . '/lib.php';
 
 /**
- * 
- * PARAMETERS
- * 
+ * BEGIN PARAMETERS
  */
 
-$signers = [];
-$files = [];
-
 /**
- * 
+ *
  * CHANGE THIS
- * 
+ *
  * File token provided by file upload response.
  */
-
-$file['token'] = '45f943fcc30399e2ec4ea7d3473c5c52105ea3e2';
-
-array_push($files, $file); // For 'pdf' type only one file is supported.
+const FILE_TOKEN = 'c6661f5282870647e2cce56d2767287066c4964d';
 
 /**
  * Signed document format. Check documentation for all available options.
  */
-$type = 'pdf';
+const DOCUMENT_TYPE = 'pdf';
 
 /**
  * Signing name. Will be displayed as the main title.
  */
-$signingName = 'Agreement';
+const DOCUMENT_NAME = 'Agreement';
 
 /**
  * Signer's unique identifier - personal code.
  */
-$signerUID = '51001091072';
-$signer['id'] = $signerUID;
+const SIGNER_ID = 'test_signer';
 
 /**
  * Name
  */
-$signer['name'] = 'Tester';
+const SIGNER_NAME = 'Tester';
 
 /**
  * Surname
  */
-$signer['surname'] = 'Surname';
+const SIGNER_SURNAME = 'Surname';
 
 /**
  * Phone number. Optional.
  */
-$signer['phone'] = '+37260000007';
+const SIGNER_PHONE = '+37260000007';
 
 /**
  * Personal code. Optional.
  */
-$signer['code'] = '51001091072';
+const SIGNER_CODE = '51001091072';
 
 /**
  * Signing purpose. Availabe options listed in documentation.
  */
-$signer['signing_purpose'] = 'signature';
-
-array_push($signers, $signer); // Add as many signers as you need.
-
+const SIGNER_SIGNING_PURPOSE = 'signature';
 
 /**
- * 
- * MAKING API REQUESTS
- * 
+ * END PARAMETERS
  */
+
+$files = [
+    [
+        'token' => FILE_TOKEN,
+    ],
+]; // For 'pdf' type only one file is supported.
+
+$signers = [
+    [
+        'id' => SIGNER_ID,
+        'name' => SIGNER_NAME,
+        'surname' => SIGNER_SURNAME,
+        'phone' => SIGNER_PHONE,
+        'code' => SIGNER_CODE,
+        'signing_purpose' => SIGNER_SIGNING_PURPOSE,
+    ],
+    // Add as many signers as you need.
+];
+
+/**
+ * Initialize the client
+ */
+$client = Client::create([
+    'apiKey' => CONFIG_ACCESS_TOKEN,
+    'sandbox' => true,
+]);
 
 /**
  * Create multiple signings
@@ -78,38 +94,38 @@ array_push($signers, $signer); // Add as many signers as you need.
 $action = 'signing/create';
 
 $signings = [];
-for ($i = 1 ; $i <= 2; $i++) {
-	$createResponse = request(getApiUrlByAction($action), [
-	    'type' => $type,
-	    'name' => $signingName,
-	    'signers' => $signers,
-	    'files' => $files,
-	    'postback_url' => $postbackUrl,
-	], REQUEST_POST);
+for ($i = 1; $i <= 2; $i++) {
+    $createRequest = new Create(
+        DOCUMENT_TYPE,
+        DOCUMENT_NAME,
+        $files,
+        $signers,
+        CONFIG_POSTBACK_URL
+    );
 
-	if ($createResponse['status'] != 'ok') {
-	    echo "Signing could not be created." . PHP_EOL;
-	    exit;
-	}
+    try {
+        $createResponse = $client->get($createRequest);
+    } catch (\RuntimeException $e) {
+        echo "Signing could not be created." . PHP_EOL;
+        echo $e->getMessage() . PHP_EOL;
+        exit;
+    }
 
-	$signings[] = [
-		'token' => $createResponse['token'],
-        'signer_token' => $createResponse['signers']['51001091072'],
-	];
+    $signings[] = [
+        'token' => $createResponse->getToken(),
+        'signer_token' => $createResponse->getSigners()[SIGNER_ID],
+    ];
 }
 
-$action = 'signing/createbatch';
-$batchSigningCreateResponse = request(getApiUrlByAction($action), [
-	'signings' => $signings
-]);
-
+$createBatchRequest = new CreateBatch($signings);
+$createBatchResponse = $client->get($createBatchRequest);
 
 /**
  * Important!
  * Signing URL formation.
  */
-$batchSigningUrl = trim($apiUrl, '/') . "/signing/batch/" . $batchSigningCreateResponse['token'];
-$sequentialSigningUrl = trim($apiUrl, '/') . "/signing/sequence/" . $batchSigningCreateResponse['token'];
+$batchSigningUrl = $client->getBatchSigningUrl($createBatchResponse->getToken());
+$sequentialSigningUrl = $client->getSequenceSigningUrl($createBatchResponse->getToken());
 
 echo "Batch signing successfully created." . PHP_EOL;
 echo "View and sign it here: " . PHP_EOL . PHP_EOL;
@@ -119,6 +135,5 @@ echo "Sequential signing successfully created as well." . PHP_EOL;
 echo "View and sign it here: " . PHP_EOL . PHP_EOL;
 echo $sequentialSigningUrl . PHP_EOL . PHP_EOL;
 
-echo "Signing url formation: " . trim($apiUrl, '/') . "/signing/batch/<BATCH_SIGNING_TOKEN> or " . trim($apiUrl, '/') . "/signing/sequence/<BATCH_SIGNING_TOKEN>"  . PHP_EOL;
+echo "Signing url formation: " . trim($client->getBaseUrl(), '/') . "/signing/batch/<BATCH_SIGNING_TOKEN> or " . trim($client->getBaseUrl(), '/') . "/signing/sequence/<BATCH_SIGNING_TOKEN>"  . PHP_EOL;
 echo "SIGNING_TOKEN: token received with 'signing/createbatch' API call response." . PHP_EOL;
-

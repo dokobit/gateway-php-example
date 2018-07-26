@@ -1,67 +1,46 @@
 <?php
+use Dokobit\Gateway\Client;
+use Dokobit\Gateway\Query\File\Upload;
+
+require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/config.php';
-require_once __DIR__ . '/lib.php';
 
 /**
- * 
- * PARAMETERS
- * 
+ * BEGIN PARAMETERS
  */
 
 /**
  * File name of document you want to sign.
  */
-$file['name'] = 'test.pdf'; 
+const FILE_NAME = 'test.pdf';
 
 /**
- * HTTP URL where the file is stored.
- * Gateway API will download the file from given resource URL.
- * Ensure that file URL is accessible from internet.
+ * Path of the file to be uploaded.
  */
-$file['url'] = 'https://developers.isign.io/sc/test.pdf';
+const FILE_PATH = 'test.pdf';
 
 /**
- * SHA1 digest of file content.
+ * END PARAMETERS
  */
-$file['digest'] = 'a50edb61f4bbdce166b752dbd3d3c434fb2de1ab';
-
 
 /**
- * 
- * MAKING API REQUESTS
- * 
+ * Initialize the client
  */
+$client = Client::create([
+    'apiKey' => CONFIG_ACCESS_TOKEN,
+    'sandbox' => true,
+]);
 
 /**
  * Upload file
  */
-$action = 'upload';
-$uploadResponse = request(getApiUrlByAction($action), [
-    'file' => $file
-], REQUEST_POST);
+$request = new Upload(FILE_PATH);
 
-if ($uploadResponse['status'] != 'ok') {
-    echo "File could not be uploaded.
-Please ensure that file URL is accessible from the internet." . PHP_EOL;
-    exit;
-}
-
-/**
- * Check file status
- */
-$action = 'upload/status/' . $uploadResponse['token'];
-$statusResponse = '';
-while ($statusResponse === '' || $statusResponse['status'] == 'pending') {
-    $statusResponse = request(getApiUrlByAction($action), [
-        'token' => $uploadResponse['token']
-    ], REQUEST_GET);
-    sleep(2);
-}
-
-if (empty($statusResponse) || $statusResponse['status'] != 'uploaded') {
-    echo "Gateway API could not download the file.
-Please ensure that file URL is accessible from the internet." 
-        . PHP_EOL;
+try {
+    $response = $client->get($request);
+} catch (\RuntimeException $e) {
+    echo "Unable to upload the file." . PHP_EOL;
+    echo $e->getMessage() . PHP_EOL;
     exit;
 }
 
@@ -70,5 +49,5 @@ Please ensure that file URL is accessible from the internet."
  */
 echo "File has been successfully uploaded." . PHP_EOL;
 echo "File token is: " . PHP_EOL . PHP_EOL;
-echo "     "  . $uploadResponse['token'] . PHP_EOL . PHP_EOL;
+echo "     "  . $response->getToken() . PHP_EOL . PHP_EOL;
 echo "Use this token to create signing." . PHP_EOL;

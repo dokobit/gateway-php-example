@@ -1,0 +1,9 @@
+{
+    "name": "dokobit/gateway-php-example",
+    "description": "An example of using Dokobit Gateway API in a PHP application",
+    "type": "project",
+    "require": {
+        "dokobit/gateway-php-sdk": "^1.0"
+    },
+    "license": "MIT"
+}

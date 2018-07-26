@@ -1,106 +1,121 @@
 <?php
+use Dokobit\Gateway\Client;
+use Dokobit\Gateway\Query\Signing\Create;
+
+require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/config.php';
-require_once __DIR__ . '/lib.php';
 
 /**
- * 
- * PARAMETERS
- * 
+ * BEGIN PARAMETERS
  */
 
-$signers = [];
-$files = [];
-
 /**
- * 
+ *
  * CHANGE THIS
- * 
+ *
  * File token provided by file upload response.
  */
-
-$file['token'] = '5582ce8dd5f83a50edb61f4bbdce166b752dbd3d3c434fb2de1ab';
-
-array_push($files, $file); // For 'pdf' type only one file is supported.
+const FILE_TOKEN = 'c6661f5282870647e2cce56d2767287066c4964d';
 
 /**
  * Signed document format. Check documentation for all available options.
  */
-$type = 'pdf';
+const DOCUMENT_TYPE = 'pdf';
 
 /**
  * Signing name. Will be displayed as the main title.
  */
-$signingName = 'Agreement';
+const DOCUMENT_NAME = 'Agreement';
 
 /**
  * Signer's unique identifier - personal code.
  */
-$signerUID = '51001091072';
-$signer['id'] = $signerUID;
+const SIGNER_ID = 'test_signer';
 
 /**
  * Name
  */
-$signer['name'] = 'Tester';
+const SIGNER_NAME = 'Tester';
 
 /**
  * Surname
  */
-$signer['surname'] = 'Surname';
+const SIGNER_SURNAME = 'Surname';
 
 /**
  * Phone number. Optional.
  */
-$signer['phone'] = '+37260000007';
+const SIGNER_PHONE = '+37260000007';
 
 /**
  * Personal code. Optional.
  */
-$signer['code'] = '51001091072';
+const SIGNER_CODE = '51001091072';
 
 /**
  * Signing purpose. Availabe options listed in documentation.
  */
-$signer['signing_purpose'] = 'signature';
-
-array_push($signers, $signer); // Add as many signers as you need.
-
+const SIGNER_SIGNING_PURPOSE = 'signature';
 
 /**
- * 
- * MAKING API REQUESTS
- * 
+ * END PARAMETERS
  */
+
+$files = [
+    [
+        'token' => FILE_TOKEN,
+    ],
+]; // For 'pdf' type only one file is supported.
+
+$signers = [
+    [
+        'id' => SIGNER_ID,
+        'name' => SIGNER_NAME,
+        'surname' => SIGNER_SURNAME,
+        'phone' => SIGNER_PHONE,
+        'code' => SIGNER_CODE,
+        'signing_purpose' => SIGNER_SIGNING_PURPOSE,
+    ],
+    // Add as many signers as you need.
+];
+
+/**
+ * Initialize the client
+ */
+$client = Client::create([
+    'apiKey' => CONFIG_ACCESS_TOKEN,
+    'sandbox' => true,
+]);
 
 /**
  * Create signing
  */
-$action = 'signing/create';
-$createResponse = request(getApiUrlByAction($action), [
-    'type' => $type,
-    'name' => $signingName,
-    'signers' => $signers,
-    'files' => $files,
-    'postback_url' => $postbackUrl,
-], REQUEST_POST);
+$request = new Create(
+    DOCUMENT_TYPE,
+    DOCUMENT_NAME,
+    $files,
+    $signers,
+    CONFIG_POSTBACK_URL
+);
 
-if ($createResponse['status'] != 'ok') {
+try {
+    $response = $client->get($request);
+} catch (\RuntimeException $e) {
     echo "Signing could not be created." . PHP_EOL;
+    echo $e->getMessage() . PHP_EOL;
     exit;
 }
 
 /**
- * Important!
- * Signing URL formation.
+ * Generate the signing URL for this signer.
  */
-$signingUrl = trim($apiUrl, '/') . "/signing/" . $createResponse['token'] . '?access_token=' . $createResponse['signers'][$signerUID];
+$signingUrl = $client->getSigningUrl($response->getToken(), $response->getSigners()[SIGNER_ID]);
 
 echo "Signing successfully created." . PHP_EOL;
 echo "View and sign it here: " . PHP_EOL . PHP_EOL;
 echo $signingUrl . PHP_EOL . PHP_EOL;
 
-echo "Signing url formation: " . trim($apiUrl, '/') . "/signing/<SIGNING_TOKEN>?access_token=<SIGNER_ACCESS_TOKEN>" . PHP_EOL;
+echo "Signing url formation: " . trim($client->getBaseUrl(), '/') . "/signing/<SIGNING_TOKEN>?access_token=<SIGNER_ACCESS_TOKEN>" . PHP_EOL;
 echo "SIGNING_TOKEN: token received with 'signing/create' API call response." . PHP_EOL;
-echo "SIGNER_ACCESS_TOKEN: token received with 'signing/create' API call response as parameter 'signers'.
-Signers represented as associative array where key is signer's unique identifier - personal code." . PHP_EOL;
-
+echo "SIGNER_ACCESS_TOKEN: token received with 'signing/create' API call response as parameter 'signers'." . PHP_EOL;
+echo "Signers are represented as an associative array where key is signer's unique identifier supplied by you." . PHP_EOL;

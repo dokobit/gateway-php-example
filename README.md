@@ -1,8 +1,15 @@
-# ISIGN.io Gateway API PHP Example
+# Dokobit Gateway API PHP Example
 
-## Example configuration
+This is a simplistic demo which will help you get started with Dokobit Gateway API.
+
+## Before you begin
+- Check out the documentation at https://gateway-sandbox.dokobit.com/api/doc
+- Request an access token [here](https://www.dokobit.com/developers/request-token).
+
+## Configuration
+- Use `composer install` to install dependencies
 - Copy `config.php.dist` to `config.php`.
-- Set `$accessToken` variable in `config.php`.
+- Put the access token you got from us in the `CONFIG_ACCESS_TOKEN` constant in `config.php`.
 
 ## Flow
 
@@ -10,30 +17,31 @@
 - Upload file you want to sign* and get uploaded file token.
 - Check file upload status. If status `uploaded`\*\*, continue.
 
-\* You should provide file URL which would be accessible for Gateway API.  
+\* You should provide file URL which would be accessible for Gateway API.
 \*\* File status must be checked before creating signing.
 
-`upload-file.php` - PHP code example for uploading file. Could be run from web or CLI.
+`upload-file.php` - PHP code example for uploading a local file. Could be run from web or CLI.
+`upload-file-from-url.php` - similar example for uploading a file by URL.
 
 ### Create signing
 - Use file token provided with file upload response.
 - Add as many signers as you need.
 
-`create-signing.php` - PHP code example for creating signing. Could be run from web or CLI. **Before running: edit file, and change `$file['token']` value, with token you get after running `upload-file.php`**.
+`create-signing.php` - PHP code example for creating signing. Could be run from web or CLI. **Before running: edit file, and change `$file['token']` value, to hold the file token you get after running `upload-file.php` or `upload-file-from-url.php`**.
 
 ### Sign
 Signing URL formation: https://gateway-sandbox.isign.io/signing/SIGNING_TOKEN?access_token=SIGNER_ACCESS_TOKEN.
-URL is unique for each signer.  
-`SIGNING_TOKEN`: token received with `signing/create` API call response.  
-`SIGNER_ACCESS_TOKEN`: token received with `signing/create` API call response as parameter `signers`.  
-Signers represented as associative array where key is signer's unique identifier - personal code.  
+The URL is unique for each signer.
+`SIGNING_TOKEN`: token received with `signing/create` API call response.
+`SIGNER_ACCESS_TOKEN`: token received with `signing/create` API call response as parameter `signers`.
+Signers represented as associative array where key is signer's unique identifier - personal code.
 
-Navigate to signing URL, sign document.  
+Navigate to signing URL, sign document.
 
 
-### Retrieving signed document
-After document signing postback calls are trigered, if 
-`callback_url` was set while creating signing.  
+### Retrieving the signed document
+After document signing postback calls are trigered, if
+`callback_url` was set while creating signing.
 There are four types of postback calls:
 
 1. `signer_signed` - after signer has signed document.

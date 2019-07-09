@@ -85,6 +85,7 @@ $createResponse = request(getApiUrlByAction($action), [
 ], REQUEST_POST);
 
 if ($createResponse['status'] != 'ok') {
+	print_r($createResponse);
     echo "Signing could not be created." . PHP_EOL;
     exit;
 }

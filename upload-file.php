@@ -18,7 +18,7 @@ $file['name'] = 'test.pdf';
  * Gateway API will download the file from given resource URL.
  * Ensure that file URL is accessible from internet.
  */
-$file['url'] = 'https://developers.isign.io/sc/test.pdf';
+$file['url'] = 'https://developers.dokobit.com/sc/test.pdf';
 
 /**
  * SHA1 digest of file content.
@@ -35,7 +35,7 @@ $file['digest'] = 'a50edb61f4bbdce166b752dbd3d3c434fb2de1ab';
 /**
  * Upload file
  */
-$action = 'upload';
+$action = 'file/upload';
 $uploadResponse = request(getApiUrlByAction($action), [
     'file' => $file
 ], REQUEST_POST);
@@ -49,7 +49,7 @@ Please ensure that file URL is accessible from the internet." . PHP_EOL;
 /**
  * Check file status
  */
-$action = 'upload/status/' . $uploadResponse['token'];
+$action = 'file/upload/status/' . $uploadResponse['token'];
 $statusResponse = '';
 while ($statusResponse === '' || $statusResponse['status'] == 'pending') {
     $statusResponse = request(getApiUrlByAction($action), [

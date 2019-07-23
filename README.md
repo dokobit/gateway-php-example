@@ -1,4 +1,4 @@
-# ISIGN.io Gateway API PHP Example
+# Dokobit Documents Gateway PHP Example
 
 ## Example configuration
 - Copy `config.php.dist` to `config.php`.
@@ -10,7 +10,7 @@
 - Upload file you want to sign* and get uploaded file token.
 - Check file upload status. If status `uploaded`\*\*, continue.
 
-\* You should provide file URL which would be accessible for Gateway API.  
+\* You should provide file URL which would be accessible for Documents Gateway.  
 \*\* File status must be checked before creating signing.
 
 `upload-file.php` - PHP code example for uploading file. Could be run from web or CLI.
@@ -22,7 +22,7 @@
 `create-signing.php` - PHP code example for creating signing. Could be run from web or CLI. **Before running: edit file, and change `$file['token']` value, with token you get after running `upload-file.php`**.
 
 ### Sign
-Signing URL formation: https://gateway-sandbox.isign.io/signing/SIGNING_TOKEN?access_token=SIGNER_ACCESS_TOKEN.
+Signing URL formation: https://gateway-sandbox.dokobit.com/api/doc#_api_signing_create.
 URL is unique for each signer.  
 `SIGNING_TOKEN`: token received with `signing/create` API call response.  
 `SIGNER_ACCESS_TOKEN`: token received with `signing/create` API call response as parameter `signers`.  
@@ -42,11 +42,11 @@ There are four types of postback calls:
 3. `signing_archive_failed` - after document couldn't be archived (for signings with PADES-LTV and XADES-XL levels only).
 
 `postback-handler.php` - PHP code example for handling postback calls.
-File should be placed in public web directory, accessible for Gateway API.
+File should be placed in public web directory, accessible for Documents Gateway.
 
 To retrieve signed document using these examples, your will need:
 
-- Put `postback-handler.php` in public web directory, accessible for Gateway API.
+- Put `postback-handler.php` in public web directory, accessible for Documents Gateway.
 - Set `$postbackUrl` parameter in `config.php` with URL where the `postback-handler.php` will be available. For eg. `http://your-public-host/postback-handler.php`.
 - Create signing.
 - Sign.

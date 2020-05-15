@@ -1,4 +1,4 @@
-# ISIGN.io Gateway API PHP Example
+# Dokobit Documents Gateway API PHP Example
 
 ## Example configuration
 - Copy `config.php.dist` to `config.php`.
@@ -22,7 +22,7 @@
 `create-signing.php` - PHP code example for creating signing. Could be run from web or CLI. **Before running: edit file, and change `$file['token']` value, with token you get after running `upload-file.php`**.
 
 ### Sign
-Signing URL formation: https://gateway-sandbox.isign.io/signing/SIGNING_TOKEN?access_token=SIGNER_ACCESS_TOKEN.
+Signing URL formation: https://gateway-sandbox.dokobit.com/signing/SIGNING_TOKEN?access_token=SIGNER_ACCESS_TOKEN.
 URL is unique for each signer.  
 `SIGNING_TOKEN`: token received with `signing/create` API call response.  
 `SIGNER_ACCESS_TOKEN`: token received with `signing/create` API call response as parameter `signers`.  

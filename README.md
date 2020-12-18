@@ -1,4 +1,4 @@
-# Dokobit Documents Gateway API PHP Example
+# Dokobit Documents Gateway PHP Example
 
 ## Example configuration
 - Copy `config.php.dist` to `config.php`.
@@ -10,7 +10,7 @@
 - Upload file you want to sign* and get uploaded file token.
 - Check file upload status. If status `uploaded`\*\*, continue.
 
-\* You should provide file URL which would be accessible for Gateway API.  
+\* You should provide file['URL'] which would be accessible for Documents Gateway or Base64 encoded file['content'] could be used instead.  
 \*\* File status must be checked before creating signing.
 
 `upload-file.php` - PHP code example for uploading file. Could be run from web or CLI.
@@ -33,7 +33,7 @@ Navigate to signing URL, sign document.
 
 ### Retrieving signed document
 After document signing postback calls are trigered, if 
-`callback_url` was set while creating signing.  
+`postback_url` was set while creating signing.  
 There are four types of postback calls:
 
 1. `signer_signed` - after signer has signed document.

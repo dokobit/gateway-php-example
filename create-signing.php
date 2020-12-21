@@ -33,7 +33,7 @@ $type = 'pdf';
 $signingName = 'Agreement';
 
 /**
- * Unique user identifier from your system..
+ * Unique user identifier from your system.
  */
 $signerUID = 'o880jxigih';
 $signer['id'] = $signerUID;

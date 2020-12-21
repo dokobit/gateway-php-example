@@ -10,7 +10,7 @@
 - Upload file you want to sign* and get uploaded file token.
 - Check file upload status. If status `uploaded`\*\*, continue.
 
-\* You should provide file['url'] which would be accessible for Documents Gateway or Base64 encoded file['content'] could be used instead.  
+\* You should provide `file['url']` which would be accessible for Documents Gateway or Base64 encoded `file['content']` could be used instead.  
 \*\* File status must be checked before creating signing.
 
 `upload-file.php` - PHP code example for uploading file. Could be run from web or CLI.

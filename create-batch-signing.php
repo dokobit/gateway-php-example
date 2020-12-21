@@ -63,15 +63,6 @@ $signer['code'] = '50001018865';
  */
 $signer['signing_purpose'] = 'signature';
 
-/**
- * Set visible signing options for user.
- * Batch signing is only available for SmartCard eID.
- * Other options can be displayed in iframe. However, it is recomended not to confuse user and display only the available signing eID.
- */
-$signer['signing_options'] = [
-	'stationary'
-];
-
 array_push($signers, $signer); // Add as many signers as you need.
 
 

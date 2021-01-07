@@ -33,9 +33,9 @@ $type = 'pdf';
 $signingName = 'Agreement';
 
 /**
- * Signer's unique identifier - personal code.
+ * Unique user identifier from your system.
  */
-$signerUID = '51001091072';
+$signerUID = 'o880jxigih';
 $signer['id'] = $signerUID;
 
 /**
@@ -49,22 +49,33 @@ $signer['name'] = 'Tester';
 $signer['surname'] = 'Surname';
 
 /**
- * Phone number. Optional.
+ * Phone number. Optional. If provided, will be prefilled in iframe for Mobile ID.
  */
-$signer['phone'] = '+37260000007';
+$signer['phone'] = '+37060000666';
 
 /**
- * Personal code. Optional.
+ * Personal code. Optional. If provided, will be prefilled for Smart-ID in iframe. Also, will not require entering manually for Mobile ID.
  */
-$signer['code'] = '51001091072';
+$signer['code'] = '50001018865';
+
+/**
+ * Country code. Required for signing with Smart-ID. Can also be used to preselect a country from a list in iframe dropdown for Smart-ID and Mobile ID.
+ */
+$signer['country_code'] = 'LT';
 
 /**
  * Signing purpose. Availabe options listed in documentation.
  */
 $signer['signing_purpose'] = 'signature';
 
-array_push($signers, $signer); // Add as many signers as you need.
+/**
+ * Set visible signing options for user. Also adjusts the order of eIDs in iframe. Options: mobile|smartid|stationary|eparaksts_mobile
+ */
+$signer['signing_options'] = [
+	'mobile', 'smartid', 'stationary', 'eparaksts_mobile'
+];
 
+array_push($signers, $signer); // Add as many signers as you need.
 
 /**
  * 

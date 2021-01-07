@@ -33,9 +33,9 @@ $type = 'pdf';
 $signingName = 'Agreement';
 
 /**
- * Signer's unique identifier - personal code.
+ * Unique user identifier from your system.
  */
-$signerUID = '51001091072';
+$signerUID = 'o880jxigih';
 $signer['id'] = $signerUID;
 
 /**
@@ -51,12 +51,12 @@ $signer['surname'] = 'Surname';
 /**
  * Phone number. Optional.
  */
-$signer['phone'] = '+37260000007';
+$signer['phone'] = '+37060000666';
 
 /**
  * Personal code. Optional.
  */
-$signer['code'] = '51001091072';
+$signer['code'] = '50001018865';
 
 /**
  * Signing purpose. Availabe options listed in documentation.
@@ -94,7 +94,7 @@ for ($i = 1 ; $i <= 2; $i++) {
 
 	$signings[] = [
 		'token' => $createResponse['token'],
-        'signer_token' => $createResponse['signers']['51001091072'],
+        'signer_token' => $createResponse['signers']['o880jxigih'],
 	];
 }
 

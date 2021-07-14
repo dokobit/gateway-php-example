@@ -1,4 +1,7 @@
 # Dokobit Documents Gateway API PHP Example
+- Check more documentation at https://gateway-sandbox.dokobit.com/api/doc
+- Request access token [here](https://www.dokobit.com/developers/request-token).
+- Check Mobile ID and Smart-ID test data [here](https://www.dokobit.com/developers/testing).
 
 ## Example configuration
 - Copy `config.php.dist` to `config.php`.

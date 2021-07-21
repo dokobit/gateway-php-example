@@ -37,7 +37,7 @@ Navigate to signing URL, sign document.
 ### Retrieving signed document
 After successful signing, you have two ways to get the signed file.
 #### Via postback url
-Postback calls are trigered, if `callbaclkUrl` was set while creating signing.
+Postback calls are trigered, if `$postbackUrl` was set while creating signing.
  
 There are four types of postback calls:
 

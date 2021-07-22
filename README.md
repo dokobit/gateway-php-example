@@ -1,4 +1,7 @@
-# Dokobit Documents Gateway API PHP Example
+# Dokobit Documents Gateway PHP Example
+- Check more documentation at https://gateway-sandbox.dokobit.com/api/doc
+- Request access token [here](https://www.dokobit.com/developers/request-token).
+- Check Mobile ID and Smart-ID test data [here](https://www.dokobit.com/developers/testing).
 
 ## Example configuration
 - Copy `config.php.dist` to `config.php`.
@@ -10,7 +13,7 @@
 - Upload file you want to sign* and get uploaded file token.
 - Check file upload status. If status `uploaded`\*\*, continue.
 
-\* You should provide `file['url']` which would be accessible for Documents Gateway API or Base64 encoded `file['content']` could be used instead.  
+\* You should provide `file['url']` which would be accessible for Documents Gateway or Base64 encoded `file['content']` could be used instead.  
 \*\* File status must be checked before creating signing.
 
 `upload-file.php` - PHP code example for uploading file. Could be run from web or CLI.
@@ -32,8 +35,10 @@ Navigate to signing URL, sign document.
 
 
 ### Retrieving signed document
-After document signing postback calls are trigered, if 
-`postback_url` was set while creating signing.  
+After successful signing, you have two ways to get the signed file.
+#### Via postback url
+Postback calls are trigered, if `postback_url` was set while creating signing.
+ 
 There are four types of postback calls:
 
 1. `signer_signed` - after signer has signed document.
@@ -42,13 +47,18 @@ There are four types of postback calls:
 3. `signing_archive_failed` - after document couldn't be archived (for signings with PADES-LTV and XADES-XL levels only).
 
 `postback-handler.php` - PHP code example for handling postback calls.
-File should be placed in public web directory, accessible for Gateway API.
+File should be placed in public web directory, accessible for Documents Gateway.
 
 To retrieve signed document using these examples, your will need:
 
-- Put `postback-handler.php` in public web directory, accessible for Gateway API.
+- Put `postback-handler.php` in public web directory, accessible for Documents Gateway.
 - Set `$postbackUrl` parameter in `config.php` with URL where the `postback-handler.php` will be available. For eg. `http://your-public-host/postback-handler.php`.
 - Create signing.
 - Sign.
 - Information about signed document will be sent to postback URL. `postback-handler.php` will handle postback and signed file will be stored in directory where `postback-handler.php` is located.
 - Log file `postback.log` containing postback information, will be placed in the same directory as postback handler.
+
+#### Via JavaScript callback
+If you want to have JavaScript events, add its support by following the instructions [here](https://gateway-sandbox.dokobit.com/api/iframe-integration).
+
+After receiving "onSignSuccess" callback, you can request signing status from your backend by making GET request to [/api/signing/SIGNING_TOKEN/status.json](https://gateway-sandbox.dokobit.com/api/doc#_api_signing_status) and fetch signed document by using "file" parameter in the response.

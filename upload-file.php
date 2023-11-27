@@ -23,7 +23,7 @@ $file['url'] = 'https://gateway-sandbox.dokobit.com/sc/test.pdf';
 /**
  * SHA256 file hash. SHA1 is supported, but not recommended.
  */
-$file['digest'] = '1d879e6248e4dc553b286fc5f81dc52bf841ead031287228548551a70cf06560';
+$file['digest'] = '6256a099cd2a3d3606acc86e7eacbdcf4cd067db3a1d46930d77886d96fd226e';
 
 
 /**

@@ -1,7 +1,7 @@
 # Dokobit Documents Gateway PHP Example
 - Check more documentation at https://gateway-sandbox.dokobit.com/api/doc
 - Request access token [here](https://www.dokobit.com/developers/request-token).
-- Check Mobile ID and Smart-ID test data [here](https://www.dokobit.com/developers/testing).
+- Check Mobile ID and Smart-ID test data [here](https://dokobitbysignicat.zendesk.com/hc/en-us/articles/20067528968476-Mobile-ID-and-Smart-ID-test-data).
 
 ## Example configuration
 - Copy `config.php.dist` to `config.php`.
